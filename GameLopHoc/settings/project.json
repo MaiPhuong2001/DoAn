@@ -2,7 +2,7 @@
   "migrate-history": [
     "cloud-function"
   ],
-  "last-module-event-record-time": 1690622048474,
+  "last-module-event-record-time": 1691244597961,
   "group-list": [
     "default"
   ],
@@ -12,7 +12,11 @@
     ]
   ],
   "excluded-modules": [
-    "3D Physics/Builtin"
+    "3D",
+    "3D Primitive",
+    "3D Physics/cannon.js",
+    "3D Physics/Builtin",
+    "3D Particle"
   ],
   "preview-port": 7456,
   "design-resolution-width": 1920,

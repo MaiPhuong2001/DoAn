@@ -17,13 +17,8 @@ export default class KeyInput extends cc.Component {
     isChose = false;
     setActionTouch() {
         if (this.isChose || Singleton.CAU_DO_CTRL.isWin) return;
-        Singleton.x += 1;
 
-        var dataMath = JSON.parse(localStorage.getItem("Math"));
-
-        dataMath.currentQues += 1;
-        localStorage.setItem("Math", JSON.stringify(dataMath));
-        console.log(dataMath.currentQues);
+     
 
 
 
@@ -41,6 +36,7 @@ export default class KeyInput extends cc.Component {
                 }
                 // var x = dapAn.replace("  ", "");
                 var regex = new RegExp(" ", "gi");
+                
                 var x = dapAn.replace(regex, "");
                 // console.log(x);
                 // console.log(Singleton.CAU_DO_CTRL.convertToUpperCase(Singleton.CAU_DO_CTRL.printDapAn()));

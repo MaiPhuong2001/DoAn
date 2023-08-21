@@ -3,7 +3,7 @@
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class LopHocToan extends cc.Component {
+export default class LopHocLS extends cc.Component {
     // @property(cc.TextAsset)
     sourcetxt: cc.TextAsset = null;
     @property(cc.Label)
@@ -26,24 +26,23 @@ export default class LopHocToan extends cc.Component {
     @property(cc.Label)
     txtDapAn: cc.Label = null;
 
-    dataMath = JSON.parse(localStorage.getItem("Math"));
+    dataHistory = JSON.parse(localStorage.getItem("History"));
     protected onLoad(): void {
         this.dapanA.node.parent.on(cc.Node.EventType.TOUCH_START, this.clickA, this);
         this.dapanB.node.parent.on(cc.Node.EventType.TOUCH_START, this.clickB, this);
         this.dapanC.node.parent.on(cc.Node.EventType.TOUCH_START, this.clickC, this);
         this.dapanD.node.parent.on(cc.Node.EventType.TOUCH_START, this.clickD, this);
         this.loadDataNew();
-        console.log("loadDataToan");
 
     }
     loadDataNew() {
-        cc.loader.loadRes("Toan/Cau" + this.dataMath.currentQues.toString(), cc.TextAsset, (err, txt) => {
+        cc.loader.loadRes("LichSu/Cau" + this.dataHistory.currentQues.toString(), cc.TextAsset, (err, txt) => {
             if (err) {
                 cc.error("Het cau hoi:", err);
                 this.node.active = false;
                 return;
             }
-            // Sử dụng txt ở đây
+            // Sử dụng txt ở đây            
             this.sourcetxt = txt;
             this.arrayTxt = this.sourcetxt.toString().split("/*");
             this.printfData();
@@ -54,10 +53,10 @@ export default class LopHocToan extends cc.Component {
 
     }
     printfData() {
-        this.dapanA.node.parent.color = cc.color(255, 255, 255, 255);
-        this.dapanB.node.parent.color = cc.color(255, 255, 255, 255);
-        this.dapanC.node.parent.color = cc.color(255, 255, 255, 255);
-        this.dapanD.node.parent.color = cc.color(255, 255, 255, 255);
+        this.dapanA.node.parent.color = cc.color(175, 202, 250, 255);
+        this.dapanB.node.parent.color = cc.color(175, 202, 250, 255);
+        this.dapanC.node.parent.color = cc.color(175, 202, 250, 255);
+        this.dapanD.node.parent.color = cc.color(175, 202, 250, 255);
         this.txtDapAn.node.active = false;
         if (this.winPop.active) {
             cc.tween(this.winPop)
@@ -113,10 +112,10 @@ export default class LopHocToan extends cc.Component {
         console.log(this.dapAn);
         if (this.isClick) return;
         this.isClick = true;
-        this.dataMath = JSON.parse(localStorage.getItem("Math"));
-        this.dataMath.currentQues += 1;
-        localStorage.setItem("Math", JSON.stringify(this.dataMath));
-        console.log("cau" + this.dataMath.currentQues);
+        this.dataHistory = JSON.parse(localStorage.getItem("History"));
+        this.dataHistory.currentQues += 1;
+        localStorage.setItem("History", JSON.stringify(this.dataHistory));
+        console.log("cau" + this.dataHistory.currentQues);
         if (this.dapAn == "A") {
             this.changColor("green", this.dapanA.node.parent);
             console.log("dung dung dung");
@@ -143,10 +142,10 @@ export default class LopHocToan extends cc.Component {
         console.log(this.dapAn);
         if (this.isClick) return;
         this.isClick = true;
-        this.dataMath = JSON.parse(localStorage.getItem("Math"));
-        this.dataMath.currentQues += 1;
-        localStorage.setItem("Math", JSON.stringify(this.dataMath));
-        console.log("cau" + this.dataMath.currentQues);
+        this.dataHistory = JSON.parse(localStorage.getItem("History"));
+        this.dataHistory.currentQues += 1;
+        localStorage.setItem("History", JSON.stringify(this.dataHistory));
+        console.log("cau" + this.dataHistory.currentQues);
         if (this.dapAn == "B") {
             this.changColor("green", this.dapanB.node.parent);
             console.log("dung dung dung");
@@ -174,10 +173,10 @@ export default class LopHocToan extends cc.Component {
         console.log(this.dapAn);
         if (this.isClick) return;
         this.isClick = true;
-        this.dataMath = JSON.parse(localStorage.getItem("Math"));
-        this.dataMath.currentQues += 1;
-        localStorage.setItem("Math", JSON.stringify(this.dataMath));
-        console.log("cau" + this.dataMath.currentQues);
+        this.dataHistory = JSON.parse(localStorage.getItem("History"));
+        this.dataHistory.currentQues += 1;
+        localStorage.setItem("History", JSON.stringify(this.dataHistory));
+        console.log("cau" + this.dataHistory.currentQues);
         if (this.dapAn == "C") {
             console.log("dung dung dung");
             this.changColor("green", this.dapanC.node.parent);
@@ -205,10 +204,10 @@ export default class LopHocToan extends cc.Component {
         console.log(this.dapAn);
         if (this.isClick) return;
         this.isClick = true;
-        this.dataMath = JSON.parse(localStorage.getItem("Math"));
-        this.dataMath.currentQues += 1;
-        localStorage.setItem("Math", JSON.stringify(this.dataMath));
-        console.log("cau" + this.dataMath.currentQues);
+        this.dataHistory = JSON.parse(localStorage.getItem("History"));
+        this.dataHistory.currentQues += 1;
+        localStorage.setItem("History", JSON.stringify(this.dataHistory));
+        console.log("cau" + this.dataHistory.currentQues);
         if (this.dapAn == "D") {
             this.changColor("green", this.dapanD.node.parent);
             console.log("dung dung dung");

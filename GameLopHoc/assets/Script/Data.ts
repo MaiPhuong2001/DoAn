@@ -79,13 +79,13 @@ export default class Data extends cc.Component {
             DataMusic.currentQues = 1;
             DataMusic.nextQues = 2;
             DataMusic.pass = false;
-            localStorage.setItem("Math", JSON.stringify(DataMusic));
+            localStorage.setItem("Music", JSON.stringify(DataMusic));
         }
         if (jsonDataHistory != null) {
             DataHistory.currentQues = 1;
             DataHistory.nextQues = 2;
             DataHistory.pass = false;
-            localStorage.setItem("Math", JSON.stringify(DataHistory));
+            localStorage.setItem("History", JSON.stringify(DataHistory));
         }
     }
 

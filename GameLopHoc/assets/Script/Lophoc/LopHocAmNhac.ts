@@ -2,8 +2,9 @@
 
 const { ccclass, property } = cc._decorator;
 
+
 @ccclass
-export default class LopHocToan extends cc.Component {
+export default class LopHocAmNhac extends cc.Component {
     // @property(cc.TextAsset)
     sourcetxt: cc.TextAsset = null;
     @property(cc.Label)
@@ -25,29 +26,83 @@ export default class LopHocToan extends cc.Component {
     dapAn: string = "A";
     @property(cc.Label)
     txtDapAn: cc.Label = null;
+    @property(cc.AudioSource)
+    audio: cc.AudioSource = null;
+    @property(cc.Node)
+    btnPlay: cc.Node = null;
+    @property(cc.Node)
+    btnPause: cc.Node = null;
+    properties: {
+        audioSource: {
+            default: null,
+            type: cc.AudioSource,
+        },
+    }
 
-    dataMath = JSON.parse(localStorage.getItem("Math"));
+    dataMusic = JSON.parse(localStorage.getItem("Music"));
     protected onLoad(): void {
+        console.log(this.audio);
         this.dapanA.node.parent.on(cc.Node.EventType.TOUCH_START, this.clickA, this);
         this.dapanB.node.parent.on(cc.Node.EventType.TOUCH_START, this.clickB, this);
         this.dapanC.node.parent.on(cc.Node.EventType.TOUCH_START, this.clickC, this);
         this.dapanD.node.parent.on(cc.Node.EventType.TOUCH_START, this.clickD, this);
         this.loadDataNew();
         console.log("loadDataToan");
+    }
+    isPlay = false;
+    ispause = false;
+    countTime() {
+        this.schedule(this.count,1,10);
+    }
+    time = 0;
+    count() {
+        this.time++;
+        if(this.time==10){}
+        
+    }
+    btnPlayset() {
+        console.log("play");
+        this.btnPlay.active = false;
+        this.btnPause.active = true;
+        if (!this.ispause && !this.isPlay) {
+            this.isPlay = true;
+            this.audio.play();
+        }
+        else {
+            this.audio.resume();
+        }
+
+
+    }
+    btnPauseset() {
+        this.btnPause.active = false;
+        this.btnPlay.active = true;
+        this.ispause = true;
+        this.audio.pause();
+    }
+
+    onAudioEnded() {
+        console.log("abcbcbcbb");
 
     }
     loadDataNew() {
-        cc.loader.loadRes("Toan/Cau" + this.dataMath.currentQues.toString(), cc.TextAsset, (err, txt) => {
-            if (err) {
-                cc.error("Het cau hoi:", err);
-                this.node.active = false;
-                return;
-            }
-            // Sử dụng txt ở đây
-            this.sourcetxt = txt;
-            this.arrayTxt = this.sourcetxt.toString().split("/*");
-            this.printfData();
-        });
+        if (this.dataMusic.currentQues == 1 || this.dataMusic.currentQues == 2 || this.dataMusic.currentQues == 3 || this.dataMusic.currentQues == 5 || this.dataMusic.currentQues == 7) {
+
+        }
+        else {
+            cc.loader.loadRes("AmNhac/Cau" + this.dataMusic.currentQues.toString(), cc.TextAsset, (err, txt) => {
+                if (err) {
+                    cc.error("Het cau hoi:", err);
+                    this.node.active = false;
+                    return;
+                }
+                // Sử dụng txt ở đây
+                this.sourcetxt = txt;
+                this.arrayTxt = this.sourcetxt.toString().split("/*");
+                this.printfData();
+            });
+        }
+
     }
     protected start(): void {
 
@@ -113,10 +168,10 @@ export default class LopHocToan extends cc.Component {
         console.log(this.dapAn);
         if (this.isClick) return;
         this.isClick = true;
-        this.dataMath = JSON.parse(localStorage.getItem("Math"));
-        this.dataMath.currentQues += 1;
-        localStorage.setItem("Math", JSON.stringify(this.dataMath));
-        console.log("cau" + this.dataMath.currentQues);
+        this.dataMusic = JSON.parse(localStorage.getItem("Music"));
+        this.dataMusic.currentQues += 1;
+        localStorage.setItem("Music", JSON.stringify(this.dataMusic));
+        console.log("cau" + this.dataMusic.currentQues);
         if (this.dapAn == "A") {
             this.changColor("green", this.dapanA.node.parent);
             console.log("dung dung dung");
@@ -143,10 +198,10 @@ export default class LopHocToan extends cc.Component {
         console.log(this.dapAn);
         if (this.isClick) return;
         this.isClick = true;
-        this.dataMath = JSON.parse(localStorage.getItem("Math"));
-        this.dataMath.currentQues += 1;
-        localStorage.setItem("Math", JSON.stringify(this.dataMath));
-        console.log("cau" + this.dataMath.currentQues);
+        this.dataMusic = JSON.parse(localStorage.getItem("Music"));
+        this.dataMusic.currentQues += 1;
+        localStorage.setItem("Music", JSON.stringify(this.dataMusic));
+        console.log("cau" + this.dataMusic.currentQues);
         if (this.dapAn == "B") {
             this.changColor("green", this.dapanB.node.parent);
             console.log("dung dung dung");
@@ -174,10 +229,10 @@ export default class LopHocToan extends cc.Component {
         console.log(this.dapAn);
         if (this.isClick) return;
         this.isClick = true;
-        this.dataMath = JSON.parse(localStorage.getItem("Math"));
-        this.dataMath.currentQues += 1;
-        localStorage.setItem("Math", JSON.stringify(this.dataMath));
-        console.log("cau" + this.dataMath.currentQues);
+        this.dataMusic = JSON.parse(localStorage.getItem("Music"));
+        this.dataMusic.currentQues += 1;
+        localStorage.setItem("Music", JSON.stringify(this.dataMusic));
+        console.log("cau" + this.dataMusic.currentQues);
         if (this.dapAn == "C") {
             console.log("dung dung dung");
             this.changColor("green", this.dapanC.node.parent);
@@ -205,10 +260,10 @@ export default class LopHocToan extends cc.Component {
         console.log(this.dapAn);
         if (this.isClick) return;
         this.isClick = true;
-        this.dataMath = JSON.parse(localStorage.getItem("Math"));
-        this.dataMath.currentQues += 1;
-        localStorage.setItem("Math", JSON.stringify(this.dataMath));
-        console.log("cau" + this.dataMath.currentQues);
+        this.dataMusic = JSON.parse(localStorage.getItem("Music"));
+        this.dataMusic.currentQues += 1;
+        localStorage.setItem("Music", JSON.stringify(this.dataMusic));
+        console.log("cau" + this.dataMusic.currentQues);
         if (this.dapAn == "D") {
             this.changColor("green", this.dapanD.node.parent);
             console.log("dung dung dung");

@@ -1,3 +1,5 @@
+import { TypeAudio } from "../AudioManger";
+import Singleton from "../Singleton";
 
 
 const { ccclass, property } = cc._decorator;
@@ -61,7 +63,7 @@ export default class LopHocToan extends cc.Component {
         this.txtDapAn.node.active = false;
         if (this.winPop.active) {
             cc.tween(this.winPop)
-                .to(1, { opacity: 0 })
+                .to(0.5, { opacity: 0 })
                 .call(() => {
                     this.winPop.active = false;
                     this.isClick = false;
@@ -70,7 +72,7 @@ export default class LopHocToan extends cc.Component {
         }
         else if (this.losePop.active) {
             cc.tween(this.losePop)
-                .to(1, { opacity: 0 })
+                .to(0.5, { opacity: 0 })
                 .call(() => {
                     this.losePop.active = false;
                     this.isClick = false;
@@ -98,10 +100,14 @@ export default class LopHocToan extends cc.Component {
             this.txtDapAn.string = "Đáp Án : " + this.arrayTxt[4];
         }
     }
+    dataStar = JSON.parse(localStorage.getItem("Star"));
     showWin() {
         this.txtDapAn.node.active = true;
         this.winPop.active = true;
         this.winPop.opacity = 255;
+        this.dataStar = JSON.parse(localStorage.getItem("Star"));
+        this.dataStar.count += 10;
+        localStorage.setItem("Star", JSON.stringify(this.dataStar));
     }
     showLose() {
         this.txtDapAn.node.active = true;
@@ -249,5 +255,13 @@ export default class LopHocToan extends cc.Component {
     }
     nextLevel() {
         this.loadDataNew();
+        Singleton.SET_STAR.updateStar();
+
+    }
+    btnBack() {
+        this.node.active = false;
+        Singleton.AUDIO_MANAGER.playEffect(TypeAudio.ButtonClick);
+        Singleton.AUDIO_MANAGER.stopMusic();
+        Singleton.AUDIO_MANAGER.playMusic(TypeAudio.BGMHome);
     }
 }

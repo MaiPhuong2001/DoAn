@@ -1,3 +1,4 @@
+import { TypeAudio } from "./AudioManger";
 import Singleton from "./Singleton";
 
 
@@ -8,13 +9,18 @@ export default class Data extends cc.Component {
 
     protected onLoad(): void {
         this.setData();
-      
+
+
     }
     protected start(): void {
-     
+        Singleton.AUDIO_MANAGER.playMusic(TypeAudio.BGMHome);
     }
     loadScene() {
+
         Singleton.LOAD_SCENE_MANAGER.loadSceneName("LopHoc");
+        Singleton.AUDIO_MANAGER.playEffect(TypeAudio.ButtonClick);
+        Singleton.AUDIO_MANAGER.stopMusic();
+
     }
     clearData() {
         console.log("ClearData");
@@ -23,6 +29,18 @@ export default class Data extends cc.Component {
     }
 
     setData() {
+        const Star = {
+            count: 0,
+
+        };
+        var jsonStar = localStorage.getItem("Star");
+        if (jsonStar == null) {
+            console.log("SET DATA STAR");
+            const jsonStar = JSON.stringify(Star);
+            cc.sys.localStorage.setItem("Star", jsonStar);
+        }
+
+
         const ClassMath = {
             currentQues: 1,
             nextQues: 2,

@@ -1,3 +1,5 @@
+import { TypeAudio } from "../AudioManger";
+import Singleton from "../Singleton";
 
 
 const { ccclass, property } = cc._decorator;
@@ -9,7 +11,6 @@ export default class LopHocAmNhac extends cc.Component {
     sourcetxt: cc.TextAsset = null;
     @property(cc.Label)
     Cauhoi: cc.Label = null;
-
     @property(cc.Label)
     dapanA: cc.Label = null;
     @property(cc.Label)
@@ -32,13 +33,64 @@ export default class LopHocAmNhac extends cc.Component {
     btnPlay: cc.Node = null;
     @property(cc.Node)
     btnPause: cc.Node = null;
-    properties: {
-        audioSource: {
-            default: null,
-            type: cc.AudioSource,
-        },
-    }
 
+
+    @property(cc.Node)
+    bar: cc.Node = null;
+
+    movebart = cc.Tween = null;
+
+    pause() {
+        if (this.bar.parent.active && this.isPlay) {
+            this.movebart.stop();
+            this.btnPause.active = false;
+            this.btnPlay.active = true;
+            this.ispause = true;
+            this.audio.pause();
+        }
+
+    }
+    isPlay = false;
+    ispause = false;
+    play() {
+        this.movebarr();
+        this.btnPlay.active = false;
+        this.btnPause.active = true;
+        if (!this.ispause && !this.isPlay) {
+            this.isPlay = true;
+            this.audio.play();
+        }
+        else {
+            this.audio.resume();
+        }
+        this.btnPlay.active = false;
+        this.btnPause.active = true;
+        if (!this.ispause && !this.isPlay) {
+            this.isPlay = true;
+            this.audio.play();
+        }
+        else {
+            this.audio.resume();
+        }
+    }
+    movebarr() {
+        if (this.bar.width == 900) {
+            return;
+        }
+        this.movebart = cc.tween(this.bar)
+            .to((900 - this.bar.width) / 90, { width: 900 })
+            .call(() => {
+                if (this.bar.width == 900) {
+                    this.btnPlay.active = true;
+                    this.btnPause.active = false;
+                    this.isPlay = false;
+                    this.ispause = false;
+                    this.bar.width = 0;
+                }
+            })
+        this.movebart.start();
+
+    }
     dataMusic = JSON.parse(localStorage.getItem("Music"));
     protected onLoad(): void {
         console.log(this.audio);
@@ -49,48 +101,52 @@ export default class LopHocAmNhac extends cc.Component {
         this.loadDataNew();
         console.log("loadDataToan");
     }
-    isPlay = false;
-    ispause = false;
-    countTime() {
-        this.schedule(this.count,1,10);
-    }
-    time = 0;
-    count() {
-        this.time++;
-        if(this.time==10){}
-        
-    }
-    btnPlayset() {
-        console.log("play");
-        this.btnPlay.active = false;
-        this.btnPause.active = true;
-        if (!this.ispause && !this.isPlay) {
-            this.isPlay = true;
-            this.audio.play();
-        }
-        else {
-            this.audio.resume();
-        }
 
 
-    }
-    btnPauseset() {
-        this.btnPause.active = false;
-        this.btnPlay.active = true;
-        this.ispause = true;
-        this.audio.pause();
-    }
-
-    onAudioEnded() {
-        console.log("abcbcbcbb");
-
-    }
     loadDataNew() {
-        if (this.dataMusic.currentQues == 1 || this.dataMusic.currentQues == 2 || this.dataMusic.currentQues == 3 || this.dataMusic.currentQues == 5 || this.dataMusic.currentQues == 7) {
+        this.btnPlay.active = false;
+        this.btnPause.active = false;
+        this.isPlay = false;
+        this.ispause = false;
+        this.bar.width = 0;
+        this.bar.parent.active = false;
+        if (this.dataMusic.currentQues == 1
+            || this.dataMusic.currentQues == 2
+            || this.dataMusic.currentQues == 3
+            || this.dataMusic.currentQues == 5
+            || this.dataMusic.currentQues == 7
+            || this.dataMusic.currentQues == 9
+            || this.dataMusic.currentQues == 10
+        ) {
+            Singleton.AUDIO_MANAGER.stopMusic();
+            this.bar.parent.active = true;
+            this.btnPlay.active = true;
+            this.btnPause.active = false;
+            cc.loader.loadRes("Music/Cau" + this.dataMusic.currentQues.toString(), cc.TextAsset, (err, txt) => {
+                if (err) {
+                    cc.error("Het cau hoi:", err);
+                    this.node.active = false;
+                    return;
+                }
+                // Sử dụng txt ở đây
+                this.sourcetxt = txt;
+                this.arrayTxt = this.sourcetxt.toString().split("/*");
+                this.printfData();
+            });
+            cc.loader.loadRes("Music/Cau" + this.dataMusic.currentQues.toString(), cc.AudioClip, (err, au) => {
+                if (err) {
+                    cc.error("Loi am thanh:", err);
+                    return;
+                }
+                console.log(au);
+
+                this.audio.clip = au;
+            });
 
         }
         else {
-            cc.loader.loadRes("AmNhac/Cau" + this.dataMusic.currentQues.toString(), cc.TextAsset, (err, txt) => {
+            Singleton.AUDIO_MANAGER.playMusic(TypeAudio.BGMAmNhac);
+            cc.loader.loadRes("Music/Cau" + this.dataMusic.currentQues.toString(), cc.TextAsset, (err, txt) => {
                 if (err) {
                     cc.error("Het cau hoi:", err);
                     this.node.active = false;
@@ -116,7 +172,7 @@ export default class LopHocAmNhac extends cc.Component {
         this.txtDapAn.node.active = false;
         if (this.winPop.active) {
             cc.tween(this.winPop)
-                .to(1, { opacity: 0 })
+                .to(0.5, { opacity: 0 })
                 .call(() => {
                     this.winPop.active = false;
                     this.isClick = false;
@@ -125,7 +181,7 @@ export default class LopHocAmNhac extends cc.Component {
         }
         else if (this.losePop.active) {
             cc.tween(this.losePop)
-                .to(1, { opacity: 0 })
+                .to(0.5, { opacity: 0 })
                 .call(() => {
                     this.losePop.active = false;
                     this.isClick = false;
@@ -157,6 +213,11 @@ export default class LopHocAmNhac extends cc.Component {
         this.txtDapAn.node.active = true;
         this.winPop.active = true;
         this.winPop.opacity = 255;
+        var dataStar = JSON.parse(localStorage.getItem("Star"));
+        dataStar.count += 10;
+        localStorage.setItem("Star", JSON.stringify(dataStar));
+        console.log(dataStar.count);
+
     }
     showLose() {
         this.txtDapAn.node.active = true;
@@ -167,6 +228,7 @@ export default class LopHocAmNhac extends cc.Component {
     clickA() {
         console.log(this.dapAn);
         if (this.isClick) return;
+        this.pause();
         this.isClick = true;
         this.dataMusic = JSON.parse(localStorage.getItem("Music"));
         this.dataMusic.currentQues += 1;
@@ -197,6 +259,7 @@ export default class LopHocAmNhac extends cc.Component {
     clickB() {
         console.log(this.dapAn);
         if (this.isClick) return;
+        this.pause();
         this.isClick = true;
         this.dataMusic = JSON.parse(localStorage.getItem("Music"));
         this.dataMusic.currentQues += 1;
@@ -228,6 +291,7 @@ export default class LopHocAmNhac extends cc.Component {
     clickC() {
         console.log(this.dapAn);
         if (this.isClick) return;
+        this.pause();
         this.isClick = true;
         this.dataMusic = JSON.parse(localStorage.getItem("Music"));
         this.dataMusic.currentQues += 1;
@@ -259,6 +323,7 @@ export default class LopHocAmNhac extends cc.Component {
     clickD() {
         console.log(this.dapAn);
         if (this.isClick) return;
+        this.pause();
         this.isClick = true;
         this.dataMusic = JSON.parse(localStorage.getItem("Music"));
         this.dataMusic.currentQues += 1;
@@ -304,5 +369,13 @@ export default class LopHocAmNhac extends cc.Component {
     }
     nextLevel() {
         this.loadDataNew();
+        Singleton.SET_STAR.updateStar();
+
+    }
+    btnBack() {
+        this.node.active = false;
+        Singleton.AUDIO_MANAGER.playEffect(TypeAudio.ButtonClick);
+        Singleton.AUDIO_MANAGER.stopMusic();
+        Singleton.AUDIO_MANAGER.playMusic(TypeAudio.BGMHome);
     }
 }

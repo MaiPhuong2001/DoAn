@@ -1,3 +1,4 @@
+import { TypeAudio } from "../AudioManger";
 import Singleton from "../Singleton";
 
 
@@ -24,6 +25,7 @@ export default class LopHocCtrl extends cc.Component {
 
     protected onLoad(): void {
 
+        Singleton.AUDIO_MANAGER.playMusic(TypeAudio.BGMHome);
 
         this.toan.on(cc.Node.EventType.TOUCH_START, this.openLopToan, this)
         this.amNhac.on(cc.Node.EventType.TOUCH_START, this.openAmNhac, this)
@@ -32,9 +34,12 @@ export default class LopHocCtrl extends cc.Component {
 
     }
     protected start(): void {
-      
+
     }
     openLopToan() {
+        Singleton.AUDIO_MANAGER.playEffect(TypeAudio.ButtonClick);
+        Singleton.AUDIO_MANAGER.stopMusic();
+        Singleton.AUDIO_MANAGER.playMusic(TypeAudio.BGMToan);
         this.dim.active = true;
         cc.tween(this.toan)
             .to(0.3, { scale: 1.1 })
@@ -55,6 +60,9 @@ export default class LopHocCtrl extends cc.Component {
 
     }
     openAmNhac() {
+        Singleton.AUDIO_MANAGER.playEffect(TypeAudio.ButtonClick);
+        Singleton.AUDIO_MANAGER.stopMusic();
+    
         this.dim.active = true;
         cc.tween(this.amNhac)
             .to(0.3, { scale: 1.1 })
@@ -75,6 +83,9 @@ export default class LopHocCtrl extends cc.Component {
 
     }
     openLichSu() {
+        Singleton.AUDIO_MANAGER.playEffect(TypeAudio.ButtonClick);
+        Singleton.AUDIO_MANAGER.stopMusic();
+        Singleton.AUDIO_MANAGER.playMusic(TypeAudio.BGMLichSu);
         this.dim.active = true;
         cc.tween(this.lichSu)
             .to(0.3, { scale: 1.1 })
@@ -96,5 +107,7 @@ export default class LopHocCtrl extends cc.Component {
     }
     loadsceneSPL() {
         cc.director.loadScene("Spl");
+        Singleton.AUDIO_MANAGER.playEffect(TypeAudio.ButtonClick);
+        Singleton.AUDIO_MANAGER.stopMusic();
     }
 }

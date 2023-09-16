@@ -1,3 +1,5 @@
+import { TypeAudio } from "../AudioManger";
+import Singleton from "../Singleton";
 
 
 const { ccclass, property } = cc._decorator;
@@ -60,7 +62,7 @@ export default class LopHocLS extends cc.Component {
         this.txtDapAn.node.active = false;
         if (this.winPop.active) {
             cc.tween(this.winPop)
-                .to(1, { opacity: 0 })
+                .to(0.5, { opacity: 0 })
                 .call(() => {
                     this.winPop.active = false;
                     this.isClick = false;
@@ -69,7 +71,7 @@ export default class LopHocLS extends cc.Component {
         }
         else if (this.losePop.active) {
             cc.tween(this.losePop)
-                .to(1, { opacity: 0 })
+                .to(0.5, { opacity: 0 })
                 .call(() => {
                     this.losePop.active = false;
                     this.isClick = false;
@@ -101,6 +103,9 @@ export default class LopHocLS extends cc.Component {
         this.txtDapAn.node.active = true;
         this.winPop.active = true;
         this.winPop.opacity = 255;
+        var dataStar = JSON.parse(localStorage.getItem("Star"));
+        dataStar.count += 10;
+        localStorage.setItem("Star", JSON.stringify(dataStar));
     }
     showLose() {
         this.txtDapAn.node.active = true;
@@ -248,5 +253,13 @@ export default class LopHocLS extends cc.Component {
     }
     nextLevel() {
         this.loadDataNew();
+        Singleton.SET_STAR.updateStar();
+    }
+    btnBack() {
+        this.node.active = false;
+        Singleton.AUDIO_MANAGER.playEffect(TypeAudio.ButtonClick);
+        Singleton.AUDIO_MANAGER.stopMusic();
+        Singleton.AUDIO_MANAGER.playMusic(TypeAudio.BGMHome);
+
     }
 }

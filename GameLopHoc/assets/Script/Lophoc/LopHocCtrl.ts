@@ -22,6 +22,8 @@ export default class LopHocCtrl extends cc.Component {
     @property(cc.Node)
     dim: cc.Node = null;
 
+    @property(cc.Node)
+    selectNV: cc.Node = null;
 
     protected onLoad(): void {
 
@@ -34,7 +36,10 @@ export default class LopHocCtrl extends cc.Component {
 
     }
     protected start(): void {
-
+        var dataNameNV = JSON.parse(localStorage.getItem("NameNV"));
+        if (dataNameNV.isFirst == false) {
+            this.selectNV.active = true;
+        }
     }
     openLopToan() {
         Singleton.AUDIO_MANAGER.playEffect(TypeAudio.ButtonClick);
@@ -62,7 +67,7 @@ export default class LopHocCtrl extends cc.Component {
     openAmNhac() {
         Singleton.AUDIO_MANAGER.playEffect(TypeAudio.ButtonClick);
         Singleton.AUDIO_MANAGER.stopMusic();
-    
+
         this.dim.active = true;
         cc.tween(this.amNhac)
             .to(0.3, { scale: 1.1 })

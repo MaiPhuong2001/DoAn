@@ -150,6 +150,9 @@ export default class LopHocAmNhac extends cc.Component {
                 if (err) {
                     cc.error("Het cau hoi:", err);
                     this.node.active = false;
+                    this.dataMusic.currentQues = 1;
+                    localStorage.setItem("Music", JSON.stringify(this.dataMusic));
+
                     return;
                 }
                 // Sử dụng txt ở đây
@@ -210,6 +213,7 @@ export default class LopHocAmNhac extends cc.Component {
         }
     }
     showWin() {
+        Singleton.AUDIO_MANAGER.playEffect(TypeAudio.Win);
         this.txtDapAn.node.active = true;
         this.winPop.active = true;
         this.winPop.opacity = 255;
@@ -220,6 +224,7 @@ export default class LopHocAmNhac extends cc.Component {
 
     }
     showLose() {
+        Singleton.AUDIO_MANAGER.playEffect(TypeAudio.Fail);
         this.txtDapAn.node.active = true;
         this.losePop.active = true;
         this.losePop.opacity = 255;

@@ -39,7 +39,17 @@ export default class Data extends cc.Component {
             const jsonStar = JSON.stringify(Star);
             cc.sys.localStorage.setItem("Star", jsonStar);
         }
-
+        const NameNV = {
+            namenv: "ABC",
+            isFirst: false,
+            isMale: false
+        };
+        var jsonNameNv = localStorage.getItem("NameNV");
+        if (jsonNameNv == null) {
+            console.log("SET DATA Name");
+            const jsonNameNv = JSON.stringify(NameNV);
+            cc.sys.localStorage.setItem("NameNV", jsonNameNv);
+        }
 
         const ClassMath = {
             currentQues: 1,

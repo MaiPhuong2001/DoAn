@@ -42,6 +42,8 @@ export default class LopHocLS extends cc.Component {
             if (err) {
                 cc.error("Het cau hoi:", err);
                 this.node.active = false;
+                this.dataHistory.currentQues = 1;
+                localStorage.setItem("History", JSON.stringify(this.dataHistory));
                 return;
             }
             // Sử dụng txt ở đây            
@@ -100,6 +102,7 @@ export default class LopHocLS extends cc.Component {
         }
     }
     showWin() {
+        Singleton.AUDIO_MANAGER.playEffect(TypeAudio.Win);
         this.txtDapAn.node.active = true;
         this.winPop.active = true;
         this.winPop.opacity = 255;
@@ -111,6 +114,7 @@ export default class LopHocLS extends cc.Component {
         this.txtDapAn.node.active = true;
         this.losePop.active = true;
         this.losePop.opacity = 255;
+        Singleton.AUDIO_MANAGER.playEffect(TypeAudio.Fail);
     }
     isClick = false;
     clickA() {

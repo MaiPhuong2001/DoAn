@@ -43,6 +43,9 @@ export default class LopHocToan extends cc.Component {
             if (err) {
                 cc.error("Het cau hoi:", err);
                 this.node.active = false;
+                this.dataMath.currentQues = 1;
+                localStorage.setItem("Math", JSON.stringify(this.dataMath));
+
                 return;
             }
             // Sử dụng txt ở đây
@@ -102,6 +105,7 @@ export default class LopHocToan extends cc.Component {
     }
     dataStar = JSON.parse(localStorage.getItem("Star"));
     showWin() {
+        Singleton.AUDIO_MANAGER.playEffect(TypeAudio.Win);
         this.txtDapAn.node.active = true;
         this.winPop.active = true;
         this.winPop.opacity = 255;
@@ -110,6 +114,7 @@ export default class LopHocToan extends cc.Component {
         localStorage.setItem("Star", JSON.stringify(this.dataStar));
     }
     showLose() {
+        Singleton.AUDIO_MANAGER.playEffect(TypeAudio.Fail);
         this.txtDapAn.node.active = true;
         this.losePop.active = true;
         this.losePop.opacity = 255;

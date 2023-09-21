@@ -10,7 +10,6 @@ export default class Data extends cc.Component {
     protected onLoad(): void {
         this.setData();
 
-
     }
     protected start(): void {
         Singleton.AUDIO_MANAGER.playMusic(TypeAudio.BGMHome);
